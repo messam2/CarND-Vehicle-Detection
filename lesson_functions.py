@@ -36,6 +36,7 @@ def plot3d(pixels, colors_rgb,
 
     return ax  # return Axes3D object for further manipulation
 
+
 def draw_boxes(image, bboxes, color=(0, 0, 255), thick=6):
     # Make a copy of the image
     draw_img = np.copy(image)
@@ -45,6 +46,7 @@ def draw_boxes(image, bboxes, color=(0, 0, 255), thick=6):
         cv2.rectangle(draw_img, bbox[0], bbox[1], color, thick)
     # Return the image copy with boxes drawn
     return draw_img
+
 
 def data_look(car_list, notcar_list):
     data_dict = {}
@@ -60,6 +62,7 @@ def data_look(car_list, notcar_list):
     data_dict["data_type"] = example_img.dtype
     # Return data_dict
     return data_dict
+
 
 def get_cars_notcars(path, vis=False):
     cars = []
@@ -100,6 +103,7 @@ def get_cars_notcars(path, vis=False):
 
     return cars, notcars
 
+
 def find_matches(image, template_list):
     # Define an empty list to take bbox coords
     bbox_list = []
@@ -128,6 +132,7 @@ def find_matches(image, template_list):
 
     return bbox_list
 
+
 def convert_cspace(image, cspace='BGR'):
     if cspace != 'BGR':
         if cspace == 'HSV':
@@ -145,12 +150,14 @@ def convert_cspace(image, cspace='BGR'):
 
     return feature_image
 
+
 def bin_spatial(image, cspace='BGR', size=(32, 32)):
     feature_image = convert_cspace(image, cspace=cspace)
     # Use cv2.resize().ravel() to create the feature vector
     features = cv2.resize(feature_image, size).ravel()
     # Return the feature vector
     return features
+
 
 def color_hist(image, nbins=32, bins_range=(0, 256), vis=False):
     # Compute the histogram of the color channels separately
@@ -168,6 +175,7 @@ def color_hist(image, nbins=32, bins_range=(0, 256), vis=False):
     else:
         return hist_features
 
+
 def get_hog_features(image, orient, pix_per_cell, cell_per_block, vis=False):
     gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
     if vis == True:
@@ -181,27 +189,30 @@ def get_hog_features(image, orient, pix_per_cell, cell_per_block, vis=False):
                        visualise=False, feature_vector=True)
         return features
 
-def extract_features(imgs, cspace='RGB', spatial_size=(32, 32),
-                     hist_bins=32, hist_range=(0, 256)):
+
+def extract_features(imgs, cspace='BGR', spatial_size=(32, 32),
+                     hist_bins=32, hist_range=(0, 256),
+                     orient=9, pix_per_cell=8, cell_per_block=2):
     # Create a list to append feature vectors to
     features = []
     # Iterate through the list of images
     for file in imgs:
         # Read in each one by one
         image = cv2.imread(file)
+
+        # spatial_features = bin_spatial(image, cspace=cspace, size=spatial_size)
+        # hist_features = color_hist(image, nbins=hist_bins, bins_range=hist_range)
+        #
+        # features.append(np.concatenate((spatial_features, hist_features)))
+
         spatial_features = bin_spatial(image, size=spatial_size)
         hist_features = color_hist(image, nbins=hist_bins, bins_range=hist_range)
+        hog_features = get_hog_features(image, orient=orient,
+                                        pix_per_cell=pix_per_cell,
+                                        cell_per_block=cell_per_block,
+                                        vis=False)
 
-        features.append(np.concatenate((spatial_features, hist_features)))
-
-        # spatial_features = bin_spatial(image, size=spatial_size)
-        # hist_features = color_hist(image, nbins=hist_bins, bins_range=hist_range)
-        # hog_features = get_hog_features(image, orient=9,
-        #                                 pix_per_cell=8,
-        #                                 cell_per_block=2,
-        #                                 vis=False)
-        #
-        # features.append(np.concatenate((spatial_features, hist_features, hog_features)))
+        features.append(np.concatenate((spatial_features, hist_features, hog_features)))
 
     # Return list of feature vectors
     return features
@@ -270,9 +281,11 @@ if __name__ == "__main__":
     # plt.show()
 
     car_features = extract_features(cars, cspace='RGB', spatial_size=(32, 32),
-                                    hist_bins=32, hist_range=(0, 256))
+                                    hist_bins=32, hist_range=(0, 256),
+                                    orient=9, pix_per_cell=8, cell_per_block=2)
     notcar_features = extract_features(notcars, cspace='RGB', spatial_size=(32, 32),
-                                       hist_bins=32, hist_range=(0, 256))
+                                       hist_bins=32, hist_range=(0, 256),
+                                       orient=9, pix_per_cell=8, cell_per_block=2)
 
     if len(car_features) > 0:
         # Create an array stack of feature vectors
