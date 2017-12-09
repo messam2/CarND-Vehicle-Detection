@@ -1,12 +1,10 @@
-import numpy as np
-import cv2
-from sklearn.svm import SVC, LinearSVC
+from sklearn.svm import SVC
 from sklearn.preprocessing import StandardScaler
 from sklearn.model_selection import train_test_split
-from sklearn.metrics import accuracy_score
 import pickle
 import os
-from lesson_functions import *
+import glob
+from lesson_functions import extract_features, get_cars_notcars
 
 
 def prepare_data(cspace='BGR', spatial_size=(32, 32),
