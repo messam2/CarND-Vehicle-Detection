@@ -47,7 +47,7 @@ def svm_classifier(X, y):
 
 
 if __name__ == "__main__":
-    color_space = 'BGR'  # Can be RGB, HSV, LUV, HLS, YUV, YCrCb
+    cspace = 'BGR'  # Can be RGB, HSV, LUV, HLS, YUV, YCrCb
     spatial_size = (32, 32)  # Spatial binning dimensions
     hist_bins = 32  # Number of histogram bins
     hist_range = (0, 256)
@@ -65,7 +65,7 @@ if __name__ == "__main__":
     measure_accuracy(clf, X_test, y_test)
 
     # parameters as a dictionary
-    parameters = {'color_space': color_space,
+    parameters = {'color_space': cspace,
                   'spatial_size': spatial_size,
                   'hist_bins': hist_bins,
                   'hist_range': hist_range,
