@@ -1,3 +1,4 @@
+import numpy as np
 from sklearn.svm import SVC
 from sklearn.preprocessing import StandardScaler
 from sklearn.model_selection import train_test_split
@@ -30,7 +31,7 @@ def prepare_data(cspace='BGR', spatial_size=(32, 32),
 
     X_train, X_test, y_train, y_test = train_test_split(scaled_X, y_labeled, test_size=0.2, shuffle=True)
 
-    return X_train, y_train, X_test, y_test
+    return X_scaler, X_train, y_train, X_test, y_test
 
 
 def measure_accuracy(clf, X_test, test_labels):
@@ -55,8 +56,7 @@ if __name__ == "__main__":
     pix_per_cell = 8  # HOG pixels per cell
     cell_per_block = 2  # HOG cells per block
 
-
-    X_train, y_train, X_test, y_test = \
+    X_scaler, X_train, y_train, X_test, y_test = \
         prepare_data(cspace, spatial_size,
                      hist_bins, hist_range,
                      orient, pix_per_cell, cell_per_block)
