@@ -386,8 +386,9 @@ def draw_labeled_bboxes(img, labels):
     # Return the image
     return img
 
-
+# i=1
 def find_cars(image, ystart, ystop, clf, X_scaler, parameters):
+    # global i
     color_space = parameters['color_space']
     orient = parameters['orient']
     pix_per_cell = parameters['pix_per_cell']
@@ -429,6 +430,17 @@ def find_cars(image, ystart, ystop, clf, X_scaler, parameters):
 
     # Visualize the heatmap when displaying
     heatmap = np.clip(heat, 0, 255)
+
+    # fig = plt.figure(figsize=(12, 12))
+    # plt.subplot(121)
+    # plt.imshow(window_image)
+    # plt.title('window Image')
+    # plt.subplot(122)
+    # plt.imshow(heatmap)
+    # plt.title('Heat map Image')
+    # plt.savefig('md_images/bboxes_and_heat'+str(i)+'.png')
+    # plt.show()
+    # i += 1
 
     # Find final boxes from heatmap using label function
     labels = label(heatmap)
