@@ -30,7 +30,7 @@ The goals / steps of this project are the following:
 [image12]: ./md_images/bboxes_and_heat5.png
 [image13]: ./md_images/bboxes_and_heat6.png
 [image14]: ./md_images/labels_map.png
-[image15]: ./md_images/output_bboxes.jpg
+[image15]: ./md_images/output_bboxes.png
 [video1]: ./output_videos/project_video_output.mp4
 
 ## [Rubric](https://review.udacity.com/#!/rubrics/513/view) Points
